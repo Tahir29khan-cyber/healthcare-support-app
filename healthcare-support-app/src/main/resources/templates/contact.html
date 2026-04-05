@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Contact Us – Jarurat Care</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo"><span>🏥</span><span class="logo-text">Jarurat<strong>Care</strong></span></a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/patient/register">For Patients</a></li>
+            <li><a href="/volunteer/register">Volunteer</a></li>
+            <li><a href="/contact" class="active">Contact</a></li>
+            <li><a href="/dashboard" class="nav-dashboard">Dashboard</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="form-page">
+    <div class="form-hero form-hero-contact">
+        <div class="form-hero-content">
+            <span class="form-hero-icon">📬</span>
+            <h1>Contact Us</h1>
+            <p>Have a question or need help? Send us a message and our AI will generate an instant response suggestion.</p>
+        </div>
+    </div>
+
+    <div class="form-container contact-layout">
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <div class="contact-item"><span class="contact-icon">📧</span><div><strong>Email</strong><p>support@jaruratcare.org</p></div></div>
+            <div class="contact-item"><span class="contact-icon">📞</span><div><strong>Phone</strong><p>+91-XXXX-XXXXXX</p></div></div>
+            <div class="contact-item"><span class="contact-icon">🚨</span><div><strong>Emergency</strong><p>Call 112 immediately</p></div></div>
+            <div class="contact-item"><span class="contact-icon">⏱️</span><div><strong>Response Time</strong><p>Within 24 hours</p></div></div>
+
+            <div class="ai-feature-badge">
+                <span class="ai-badge-icon">🤖</span>
+                <div>
+                    <strong>AI Auto-Response</strong>
+                    <p>Our AI analyzes your message and generates an intelligent response suggestion instantly when you submit.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form-wrap">
+            <div th:if="${successMessage}" class="alert alert-success">
+                <i class="fas fa-check-circle"></i>
+                <span th:text="${successMessage}"></span>
+            </div>
+
+            <form th:action="@{/contact}" th:object="${contactMessage}" method="post" class="styled-form" novalidate>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Your Name *</label>
+                        <input type="text" id="name" th:field="*{name}" placeholder="Full name" class="form-control" th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" th:field="*{email}" placeholder="you@example.com" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"/>
+                        <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <input type="text" id="subject" th:field="*{subject}" placeholder="What is this about? (Add URGENT if critical)" class="form-control" th:classappend="${#fields.hasErrors('subject')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message *</label>
+                    <textarea id="message" th:field="*{message}" placeholder="Tell us how we can help you..." class="form-control form-textarea" rows="6" th:classappend="${#fields.hasErrors('message')} ? 'is-invalid' : ''"></textarea>
+                    <span class="field-error" th:if="${#fields.hasErrors('message')}" th:errors="*{message}"></span>
+                </div>
+
+                <div class="form-notice ai-notice">
+                    <span>🤖</span>
+                    <p><strong>AI Feature:</strong> Upon submission, our system automatically generates a personalized response suggestion based on your message content — simulating smart auto-response functionality.</p>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/" class="btn btn-ghost">← Back</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="chatbot-widget" id="chatbotWidget">
+    <div class="chatbot-header" onclick="toggleChatbot()"><span>🤖 Health Assistant</span><span id="chatToggleIcon">✕</span></div>
+    <div class="chatbot-body" id="chatbotBody">
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot"><span class="chat-avatar">🤖</span><div class="chat-bubble">Need quick answers? Ask me instead of waiting! 😊</div></div>
+        </div>
+        <div class="quick-questions">
+            <button onclick="askQuestion('What services do you offer?')">Services?</button>
+            <button onclick="askQuestion('I need emergency help')">Emergency?</button>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="handleChatKey(event)"/>
+            <button onclick="sendChatMessage()" class="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+<button class="chatbot-fab" id="chatbotFab" onclick="toggleChatbot()">🤖 Ask AI</button>
+<script th:src="@{/js/chatbot.js}"></script>
+</body>
+</html>

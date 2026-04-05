@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Jarurat Care – Healthcare Support</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo">
+            <span class="logo-icon">🏥</span>
+            <span class="logo-text">Jarurat<strong>Care</strong></span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/patient/register">For Patients</a></li>
+            <li><a href="/volunteer/register">Volunteer</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/dashboard" class="nav-dashboard">Dashboard</a></li>
+        </ul>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-bg-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+    <div class="hero-content">
+        <span class="hero-badge">🌿 Free Healthcare NGO Support</span>
+        <h1 class="hero-title">Healthcare for<br/><span class="highlight">Every Indian</span></h1>
+        <p class="hero-subtitle">Jarurat Care connects patients in need with volunteers, medical professionals, and healthcare resources — free of charge.</p>
+        <div class="hero-actions">
+            <a href="/patient/register" class="btn btn-primary"><i class="fas fa-user-plus"></i> I Need Support</a>
+            <a href="/volunteer/register" class="btn btn-outline"><i class="fas fa-hands-helping"></i> I Want to Help</a>
+        </div>
+        <div class="hero-stats">
+            <div class="stat"><strong>Free</strong><span>All Services</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><strong>24h</strong><span>Response Time</span></div>
+            <div class="stat-divider"></div>
+            <div class="stat"><strong>AI</strong><span>Powered FAQ</span></div>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="card-float card-f1"><span class="card-emoji">💊</span><span>Medicine Assistance</span></div>
+        <div class="card-float card-f2"><span class="card-emoji">🧠</span><span>Mental Health</span></div>
+        <div class="card-float card-f3"><span class="card-emoji">🏠</span><span>Home Care</span></div>
+        <div class="hero-circle"><div class="hero-circle-inner"><span>🤝</span><p>Community<br/>Healthcare</p></div></div>
+    </div>
+</header>
+
+<section class="section services-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">What We Offer</span>
+            <h2>Our Support Services</h2>
+            <p>Comprehensive healthcare assistance for those who need it most</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card"><div class="service-icon" style="background:#e8f5e9">🏥</div><h3>Medical Consultation</h3><p>Connect with qualified doctors for guidance and second opinions, completely free.</p></div>
+            <div class="service-card"><div class="service-icon" style="background:#e3f2fd">💊</div><h3>Medicine Assistance</h3><p>We help source prescribed medications for patients who cannot afford them.</p></div>
+            <div class="service-card"><div class="service-icon" style="background:#fff3e0">🏠</div><h3>Home Care Support</h3><p>Trained volunteers visit patients unable to travel for care.</p></div>
+            <div class="service-card"><div class="service-icon" style="background:#f3e5f5">🧠</div><h3>Mental Health</h3><p>Counseling and mental wellness support by certified professionals.</p></div>
+            <div class="service-card"><div class="service-icon" style="background:#fce4ec">🚨</div><h3>Emergency Help</h3><p>Rapid coordination and support for urgent medical situations.</p></div>
+            <div class="service-card"><div class="service-icon" style="background:#e0f7fa">🤖</div><h3>AI FAQ Chatbot</h3><p>Get instant answers with our AI assistant, available 24/7.</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="section how-section">
+    <div class="container">
+        <div class="section-header"><span class="section-tag">Simple Process</span><h2>How It Works</h2></div>
+        <div class="steps-row">
+            <div class="step"><div class="step-num">01</div><h4>Register</h4><p>Fill the patient or volunteer form</p></div>
+            <div class="step-arrow">→</div>
+            <div class="step"><div class="step-num">02</div><h4>Review</h4><p>Our team prioritizes your case</p></div>
+            <div class="step-arrow">→</div>
+            <div class="step"><div class="step-num">03</div><h4>Match</h4><p>A volunteer or professional is assigned</p></div>
+            <div class="step-arrow">→</div>
+            <div class="step"><div class="step-num">04</div><h4>Support</h4><p>Receive the care you need</p></div>
+        </div>
+    </div>
+</section>
+
+<section class="section cta-section">
+    <div class="container">
+        <div class="cta-box">
+            <h2>Ready to get started?</h2>
+            <p>Whether you need help or want to give help — Jarurat Care is here.</p>
+            <div class="cta-actions">
+                <a href="/patient/register" class="btn btn-white">Register as Patient</a>
+                <a href="/volunteer/register" class="btn btn-outline-white">Become a Volunteer</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-brand"><span class="logo-text">🏥 Jarurat<strong>Care</strong></span><p>Healthcare for every Indian, free and accessible.</p></div>
+            <div class="footer-links">
+                <a href="/patient/register">Patient Register</a>
+                <a href="/volunteer/register">Volunteer</a>
+                <a href="/contact">Contact</a>
+                <a href="/dashboard">Dashboard</a>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 Jarurat Care · Spring Boot + H2 + AI Chatbot Internship Assignment</p></div>
+    </div>
+</footer>
+
+<div class="chatbot-widget" id="chatbotWidget">
+    <div class="chatbot-header" onclick="toggleChatbot()">
+        <span>🤖 Health Assistant</span>
+        <span id="chatToggleIcon">✕</span>
+    </div>
+    <div class="chatbot-body" id="chatbotBody">
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot">
+                <span class="chat-avatar">🤖</span>
+                <div class="chat-bubble">Namaste! 🙏 I'm your Jarurat Care AI assistant. Ask me about our services, registration, or anything else!</div>
+            </div>
+        </div>
+        <div class="quick-questions">
+            <button onclick="askQuestion('How do I register?')">How to register?</button>
+            <button onclick="askQuestion('What services do you offer?')">Services?</button>
+            <button onclick="askQuestion('Is it free?')">Is it free?</button>
+            <button onclick="askQuestion('I need emergency help')">Emergency?</button>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Type your question..." onkeypress="handleChatKey(event)"/>
+            <button onclick="sendChatMessage()" class="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+<button class="chatbot-fab" id="chatbotFab" onclick="toggleChatbot()">🤖 Ask AI</button>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script th:src="@{/js/chatbot.js}"></script>
+</body>
+</html>

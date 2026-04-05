@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Patient Registration – Jarurat Care</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo"><span>🏥</span><span class="logo-text">Jarurat<strong>Care</strong></span></a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/patient/register" class="active">For Patients</a></li>
+            <li><a href="/volunteer/register">Volunteer</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/dashboard" class="nav-dashboard">Dashboard</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="form-page">
+    <div class="form-hero form-hero-patient">
+        <div class="form-hero-content">
+            <span class="form-hero-icon">🏥</span>
+            <h1>Patient Registration</h1>
+            <p>Tell us about your healthcare needs. Our team will reach out within 24 hours.</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+
+        <!-- Success Banner -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <!-- Error Banner -->
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/patient/register}" th:object="${patient}" method="post" class="styled-form" novalidate>
+
+            <div class="form-section-title"><i class="fas fa-user"></i> Personal Information</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" th:field="*{fullName}" placeholder="e.g. Rahul Sharma" class="form-control" th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="age">Age *</label>
+                    <input type="number" id="age" th:field="*{age}" placeholder="e.g. 35" class="form-control" min="1" max="120" th:classappend="${#fields.hasErrors('age')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" th:field="*{email}" placeholder="you@example.com" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Mobile Number *</label>
+                    <input type="tel" id="phone" th:field="*{phone}" placeholder="10-digit mobile number" class="form-control" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" th:field="*{city}" placeholder="Your city" class="form-control"/>
+            </div>
+
+            <div class="form-section-title"><i class="fas fa-heartbeat"></i> Medical Information</div>
+
+            <div class="form-group">
+                <label for="supportType">Type of Support Needed *</label>
+                <select id="supportType" th:field="*{supportType}" class="form-control" th:classappend="${#fields.hasErrors('supportType')} ? 'is-invalid' : ''">
+                    <option value="">-- Select Support Type --</option>
+                    <option th:each="type : ${supportTypes}" th:value="${type}" th:text="${type.name().replace('_',' ')}"></option>
+                </select>
+                <span class="field-error" th:if="${#fields.hasErrors('supportType')}" th:errors="*{supportType}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="medicalConcern">Describe Your Medical Concern *</label>
+                <textarea id="medicalConcern" th:field="*{medicalConcern}" placeholder="Please describe your health concern, symptoms, or what kind of help you need..." class="form-control form-textarea" rows="5" th:classappend="${#fields.hasErrors('medicalConcern')} ? 'is-invalid' : ''"></textarea>
+                <span class="field-error" th:if="${#fields.hasErrors('medicalConcern')}" th:errors="*{medicalConcern}"></span>
+            </div>
+
+            <div class="form-notice">
+                <i class="fas fa-shield-alt"></i>
+                <p>Your information is confidential and will only be used to connect you with appropriate support. We never share your data.</p>
+            </div>
+
+            <div class="form-actions">
+                <a href="/" class="btn btn-ghost">← Back to Home</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit Registration
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="chatbot-widget" id="chatbotWidget">
+    <div class="chatbot-header" onclick="toggleChatbot()"><span>🤖 Health Assistant</span><span id="chatToggleIcon">✕</span></div>
+    <div class="chatbot-body" id="chatbotBody">
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot"><span class="chat-avatar">🤖</span><div class="chat-bubble">Need help with the form? Ask me anything! 🙏</div></div>
+        </div>
+        <div class="quick-questions">
+            <button onclick="askQuestion('What documents do I need?')">Documents needed?</button>
+            <button onclick="askQuestion('Is registration free?')">Is it free?</button>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="handleChatKey(event)"/>
+            <button onclick="sendChatMessage()" class="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+<button class="chatbot-fab" id="chatbotFab" onclick="toggleChatbot()">🤖 Ask AI</button>
+<script th:src="@{/js/chatbot.js}"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Volunteer Registration – Jarurat Care</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo"><span>🏥</span><span class="logo-text">Jarurat<strong>Care</strong></span></a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/patient/register">For Patients</a></li>
+            <li><a href="/volunteer/register" class="active">Volunteer</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/dashboard" class="nav-dashboard">Dashboard</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="form-page">
+    <div class="form-hero form-hero-volunteer">
+        <div class="form-hero-content">
+            <span class="form-hero-icon">❤️</span>
+            <h1>Volunteer Registration</h1>
+            <p>Join our network of compassionate volunteers making a difference in healthcare access.</p>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <div th:if="${successMessage}" class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span th:text="${errorMessage}"></span>
+        </div>
+
+        <form th:action="@{/volunteer/register}" th:object="${volunteer}" method="post" class="styled-form" novalidate>
+
+            <div class="form-section-title"><i class="fas fa-user"></i> Personal Details</div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fullName">Full Name *</label>
+                    <input type="text" id="fullName" th:field="*{fullName}" placeholder="Your full name" class="form-control" th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" th:field="*{city}" placeholder="Your city" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" th:field="*{email}" placeholder="you@example.com" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Mobile Number *</label>
+                    <input type="tel" id="phone" th:field="*{phone}" placeholder="10-digit mobile number" class="form-control" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid' : ''"/>
+                    <span class="field-error" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                </div>
+            </div>
+
+            <div class="form-section-title"><i class="fas fa-briefcase"></i> Professional Details</div>
+
+            <div class="form-group">
+                <label for="background">Professional Background *</label>
+                <input type="text" id="background" th:field="*{background}" placeholder="e.g. MBBS Doctor, Social Worker, Software Engineer..." class="form-control" th:classappend="${#fields.hasErrors('background')} ? 'is-invalid' : ''"/>
+                <span class="field-error" th:if="${#fields.hasErrors('background')}" th:errors="*{background}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Skills You Can Offer</label>
+                <div class="checkbox-grid">
+                    <label th:each="skill : ${skillOptions}" class="checkbox-label">
+                        <input type="checkbox" th:field="*{skills}" th:value="${skill}"/>
+                        <span th:text="${skill}"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="availability">Availability *</label>
+                <select id="availability" th:field="*{availability}" class="form-control" th:classappend="${#fields.hasErrors('availability')} ? 'is-invalid' : ''">
+                    <option value="">-- Select Availability --</option>
+                    <option th:each="opt : ${availabilityOptions}" th:value="${opt}" th:text="${opt}"></option>
+                </select>
+                <span class="field-error" th:if="${#fields.hasErrors('availability')}" th:errors="*{availability}"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="motivation">Why do you want to volunteer? (Optional)</label>
+                <textarea id="motivation" th:field="*{motivation}" placeholder="Share your motivation for volunteering with Jarurat Care..." class="form-control form-textarea" rows="4"></textarea>
+            </div>
+
+            <div class="form-notice">
+                <i class="fas fa-heart"></i>
+                <p>Thank you for choosing to make a difference! Our volunteer coordinator will contact you within 48 hours to discuss next steps.</p>
+            </div>
+
+            <div class="form-actions">
+                <a href="/" class="btn btn-ghost">← Back to Home</a>
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-hands-helping"></i> Join as Volunteer
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="chatbot-widget" id="chatbotWidget">
+    <div class="chatbot-header" onclick="toggleChatbot()"><span>🤖 Health Assistant</span><span id="chatToggleIcon">✕</span></div>
+    <div class="chatbot-body" id="chatbotBody">
+        <div class="chat-messages" id="chatMessages">
+            <div class="chat-msg bot"><span class="chat-avatar">🤖</span><div class="chat-bubble">Want to know more about volunteering? Ask me! ❤️</div></div>
+        </div>
+        <div class="quick-questions">
+            <button onclick="askQuestion('What do volunteers do?')">Volunteer role?</button>
+            <button onclick="askQuestion('How much time is needed?')">Time commitment?</button>
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" placeholder="Ask a question..." onkeypress="handleChatKey(event)"/>
+            <button onclick="sendChatMessage()" class="chat-send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+<button class="chatbot-fab" id="chatbotFab" onclick="toggleChatbot()">🤖 Ask AI</button>
+<script th:src="@{/js/chatbot.js}"></script>
+</body>
+</html>

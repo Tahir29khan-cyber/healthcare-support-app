@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Admin Dashboard – Jarurat Care</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body class="dashboard-body">
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="/" class="nav-logo"><span>🏥</span><span class="logo-text">Jarurat<strong>Care</strong></span></a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/patient/register">Patients</a></li>
+            <li><a href="/volunteer/register">Volunteers</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/dashboard" class="nav-dashboard active">Dashboard</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="dashboard-wrapper">
+    <div class="dashboard-header">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p>Real-time overview of all registrations and contact messages</p>
+        </div>
+        <div class="dashboard-actions">
+            <a href="/patient/register" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> Add Patient</a>
+            <a href="/volunteer/register" class="btn btn-success btn-sm"><i class="fas fa-plus"></i> Add Volunteer</a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card stat-blue">
+            <div class="stat-card-icon">🏥</div>
+            <div class="stat-card-info">
+                <h3 th:text="${totalPatients}">0</h3>
+                <p>Total Patients</p>
+            </div>
+        </div>
+        <div class="stat-card stat-green">
+            <div class="stat-card-icon">❤️</div>
+            <div class="stat-card-info">
+                <h3 th:text="${totalVolunteers}">0</h3>
+                <p>Active Volunteers</p>
+            </div>
+        </div>
+        <div class="stat-card stat-orange">
+            <div class="stat-card-icon">📬</div>
+            <div class="stat-card-info">
+                <h3 th:text="${totalMessages}">0</h3>
+                <p>Messages</p>
+            </div>
+        </div>
+        <div class="stat-card stat-red">
+            <div class="stat-card-icon">🔔</div>
+            <div class="stat-card-info">
+                <h3 th:text="${unreadMessages}">0</h3>
+                <p>Unread Messages</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patients Table -->
+    <div class="dashboard-section">
+        <div class="section-head">
+            <h2><i class="fas fa-user-injured"></i> Registered Patients</h2>
+            <span class="badge" th:text="${totalPatients} + ' total'"></span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table" th:if="${not #lists.isEmpty(patients)}">
+                <thead>
+                    <tr>
+                        <th>#</th><th>Name</th><th>Age</th><th>Email</th><th>Phone</th>
+                        <th>Support Type</th><th>City</th><th>Status</th><th>Registered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p, iter : ${patients}">
+                        <td th:text="${iter.count}"></td>
+                        <td th:text="${p.fullName}"></td>
+                        <td th:text="${p.age}"></td>
+                        <td th:text="${p.email}"></td>
+                        <td th:text="${p.phone}"></td>
+                        <td><span class="tag tag-blue" th:text="${p.supportType.name().replace('_',' ')}"></span></td>
+                        <td th:text="${p.city ?: '—'}"></td>
+                        <td><span class="tag tag-yellow" th:text="${p.status}"></span></td>
+                        <td th:text="${#temporals.format(p.registeredAt,'dd MMM yyyy')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(patients)}" class="empty-state">
+                <span>📋</span><p>No patients registered yet. <a href="/patient/register">Register the first one →</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Volunteers Table -->
+    <div class="dashboard-section">
+        <div class="section-head">
+            <h2><i class="fas fa-hands-helping"></i> Registered Volunteers</h2>
+            <span class="badge" th:text="${totalVolunteers} + ' total'"></span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table" th:if="${not #lists.isEmpty(volunteers)}">
+                <thead>
+                    <tr>
+                        <th>#</th><th>Name</th><th>Email</th><th>Phone</th>
+                        <th>Background</th><th>Availability</th><th>City</th><th>Registered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="v, iter : ${volunteers}">
+                        <td th:text="${iter.count}"></td>
+                        <td th:text="${v.fullName}"></td>
+                        <td th:text="${v.email}"></td>
+                        <td th:text="${v.phone}"></td>
+                        <td th:text="${v.background}"></td>
+                        <td th:text="${v.availability}"></td>
+                        <td th:text="${v.city ?: '—'}"></td>
+                        <td th:text="${#temporals.format(v.registeredAt,'dd MMM yyyy')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(volunteers)}" class="empty-state">
+                <span>👥</span><p>No volunteers yet. <a href="/volunteer/register">Be the first →</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Messages Table -->
+    <div class="dashboard-section">
+        <div class="section-head">
+            <h2><i class="fas fa-envelope"></i> Contact Messages</h2>
+            <span class="badge" th:text="${totalMessages} + ' total'"></span>
+        </div>
+        <div class="table-wrap">
+            <table class="data-table" th:if="${not #lists.isEmpty(messages)}">
+                <thead>
+                    <tr><th>#</th><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>AI Auto-Response</th><th>Status</th><th>Date</th></tr>
+                </thead>
+                <tbody>
+                    <tr th:each="m, iter : ${messages}">
+                        <td th:text="${iter.count}"></td>
+                        <td th:text="${m.name}"></td>
+                        <td th:text="${m.email}"></td>
+                        <td th:text="${m.subject}"></td>
+                        <td class="msg-cell" th:text="${#strings.abbreviate(m.message, 60)}"></td>
+                        <td class="msg-cell ai-response-cell" th:text="${#strings.abbreviate(m.autoResponse ?: '—', 80)}"></td>
+                        <td><span class="tag tag-orange" th:text="${m.status}"></span></td>
+                        <td th:text="${#temporals.format(m.submittedAt,'dd MMM yyyy')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div th:if="${#lists.isEmpty(messages)}" class="empty-state">
+                <span>📭</span><p>No messages yet. <a href="/contact">Send the first one →</a></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
